@@ -1,1 +1,2 @@
 src/plugins/env.env
+*/__pycache__/*

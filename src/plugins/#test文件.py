@@ -33,9 +33,6 @@ try:
     import ujson as json
 except ImportError:
     import json
-from dotenv import load_dotenv
-
-_ = load_dotenv(dotenv_path='src/plugins/env.env')
 
 #-------------------------路径json声明---------------------------
 #配置路径
@@ -299,23 +296,4 @@ async def query(bot: Bot, event: MessageEvent,matcher: Matcher):
 #每晚10.30之后才重置"unfinished_number"，（可以再加一个finished number），并判断是否应发送奖励提醒  完成
 #连续未完成将得到警告  完成
 #请假信息额外录入  
-#-------------------------chatgpt聊天----------------------------------------------
-llm = ChatOpenAI(
-        model_name="gpt-4o",
-        temperature=0,
-    )
-#自定义相应规则
-pp = on_message(rule=to_me(), priority=98)
-
-
-@pp.handle()
-async def answer(bot: Bot, event: MessageEvent):
-    ask = str(event.get_message())
-    #logger.opt(colors=True).info(ask)
-    if ask:
-        messages = [HumanMessage(content=ask)]
-        resp = llm.invoke(messages)
-        msg = resp.content
-        await pp.finish(message=msg, at_sender=True)
-
 
